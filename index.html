@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speegile — Helping Businesses Grow Through People and Data</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="framer-compat.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1a1a2e;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    /* Desktop nav visible, hamburger hidden */
+    .nav-desktop { display: flex; }
+    .nav-hamburger { display: none !important; }
+    .nav-mobile-drawer { display: none; }
+
+    @media (max-width: 900px) {
+      .nav-desktop { display: none !important; }
+      .nav-hamburger { display: flex !important; }
+      .nav-mobile-drawer { display: block !important; }
+    }
+
+    /* Prevent navbar overflow on all screens */
+    nav { max-width: 100vw; overflow: hidden; }
+    nav > div:first-child { max-width: 100%; }
+    @media (max-width: 480px) {
+      nav { padding: 0 12px !important; }
+    }
+
+    /* Nav link hover underline */
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 2px; left: 12px; right: 12px;
+      height: 2px; background: linear-gradient(90deg,#1A4FA0,#6C3FC5);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+      border-radius: 2px;
+    }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-link:hover { color: #1A4FA0 !important; }
+
+    /* CTA button hover */
+    .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(108,63,197,0.4) !important; }
+
+    /* Footer link hover */
+    .footer-link:hover { color: rgba(255,255,255,0.9) !important; }
+
+    /* Why Speegile cards — stack on mobile */
+    @media (max-width: 640px) {
+      .why-card { flex-direction: column !important; align-items: center !important; text-align: center !important; }
+      .why-card > div:first-child { width: 56px !important; height: 56px !important; font-size: 26px !important; }
+      .why-card > div:last-child { display: flex; flex-direction: column; align-items: center; }
+      .why-card > div:last-child > div { justify-content: center !important; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f4ff; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(#1A4FA0,#6C3FC5); border-radius: 3px; }
+
+    /* Scroll progress bar */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 9999;
+      background: linear-gradient(90deg, #1A4FA0, #6C3FC5, #F5A623);
+      width: 0%; transition: width 0.1s linear;
+      box-shadow: 0 0 8px rgba(108,63,197,0.6);
+    }
+
+    /* Custom cursor */
+    * { cursor: none !important; }
+    #cursor-dot {
+      position: fixed; z-index: 99999; pointer-events: none;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: linear-gradient(135deg, #1A4FA0, #6C3FC5);
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease, opacity 0.2s;
+      box-shadow: 0 0 8px rgba(108,63,197,0.8);
+    }
+    #cursor-ring {
+      position: fixed; z-index: 99998; pointer-events: none;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 2px solid rgba(108,63,197,0.5);
+      transform: translate(-50%, -50%);
+      transition: left 0.12s ease, top 0.12s ease, width 0.2s, height 0.2s, opacity 0.2s, border-color 0.2s;
+    }
+    #cursor-ring.hovering {
+      width: 52px; height: 52px;
+      border-color: rgba(245,166,35,0.7);
+      background: rgba(108,63,197,0.06);
+    }
+
+    /* Scroll-to-top button */
+    #scroll-top-btn {
+      position: fixed; bottom: 32px; right: 28px; z-index: 9000;
+      width: 48px; height: 48px; border-radius: 50%; border: none; cursor: none !important;
+      background: linear-gradient(135deg, #1A4FA0, #6C3FC5);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(108,63,197,0.4);
+      opacity: 0; transform: translateY(16px) scale(0.85);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    #scroll-top-btn.visible {
+      opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
+    }
+    #scroll-top-btn:hover {
+      transform: translateY(-3px) scale(1.1) !important;
+      box-shadow: 0 8px 28px rgba(108,63,197,0.6) !important;
+    }
+
+    /* Section reveal animation classes */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-36px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-scale { opacity: 0; transform: scale(0.92); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Load all component files -->
+  <script type="text/babel" src="components/Navbar.jsx"></script>
+  <script type="text/babel" src="components/Footer.jsx"></script>
+  <script type="text/babel" src="pages/Home.jsx"></script>
+  <script type="text/babel" src="pages/HumanCapital.jsx"></script>
+  <script type="text/babel" src="pages/AnalyticsSolutions.jsx"></script>
+  <script type="text/babel" src="pages/WhySpeegile.jsx"></script>
+  <script type="text/babel" src="pages/About.jsx"></script>
+  <script type="text/babel" src="pages/Contact.jsx"></script>
+
+  <!-- Main App -->
+  <script type="text/babel">
+    const { AnimatePresence, motion } = window.FramerMotion;
+
+    // Simple hash router
+    function useHash() {
+      const [hash, setHash] = React.useState(window.location.hash || '#/');
+      React.useEffect(() => {
+        const onHashChange = () => {
+          setHash(window.location.hash || '#/');
+          window.scrollTo(0, 0);
+        };
+        window.addEventListener('hashchange', onHashChange);
+        return () => window.removeEventListener('hashchange', onHashChange);
+      }, []);
+      return hash;
+    }
+
+    function PageTransition({ children, pageKey }) {
+      return (
+        <motion.div
+          key={pageKey}
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.38, ease: 'easeOut' }}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    function App() {
+      const hash = useHash();
+
+      const renderPage = () => {
+        if (hash === '#/' || hash === '' || hash === '#') return <HomePage />;
+        if (hash === '#/human-capital') return <HumanCapitalPage />;
+        if (hash === '#/analytics-solutions') return <AnalyticsPage />;
+        if (hash === '#/why-speegile') return <WhySpeegile />;
+        if (hash === '#/about') return <AboutPage />;
+        if (hash === '#/contact') return <ContactPage />;
+        return <HomePage />;
+      };
+
+      return (
+        <div>
+          <Navbar currentHash={hash} />
+          <main style={{ minHeight: '100vh' }}>
+            <AnimatePresence mode="wait">
+              <PageTransition key={hash}>
+                {renderPage()}
+              </PageTransition>
+            </AnimatePresence>
+          </main>
+          <Footer />
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+  <!-- Scroll progress bar -->
+  <div id="scroll-progress"></div>
+
+  <!-- Custom cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Scroll to top button -->
+  <button id="scroll-top-btn" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M10 15V5M10 5L5 10M10 5l5 5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <script>
+    // === Scroll progress bar ===
+    const progressBar = document.getElementById('scroll-progress');
+    function updateProgress() {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+    }
+
+    // === Scroll-to-top button ===
+    const scrollBtn = document.getElementById('scroll-top-btn');
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    function updateScrollBtn() {
+      scrollBtn.classList.toggle('visible', window.scrollY > 320);
+    }
+
+    // === Section reveal on scroll ===
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    function attachRevealObservers() {
+      document.querySelectorAll('section, .reveal, .reveal-left, .reveal-scale').forEach(el => {
+        if (!el.classList.contains('reveal') && !el.classList.contains('reveal-left') && !el.classList.contains('reveal-scale')) {
+          el.classList.add('reveal');
+        }
+        revealObserver.observe(el);
+      });
+    }
+
+    // Re-attach after React renders
+    let attached = false;
+    const domObserver = new MutationObserver(() => {
+      if (!attached && document.querySelector('section')) {
+        attached = true;
+        setTimeout(attachRevealObservers, 300);
+      }
+    });
+    domObserver.observe(document.getElementById('root'), { childList: true, subtree: true });
+
+    window.addEventListener('scroll', () => { updateProgress(); updateScrollBtn(); }, { passive: true });
+    updateProgress();
+    updateScrollBtn();
+
+    // === Custom cursor ===
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mouseX = -100, mouseY = -100;
+    let ringX = -100, ringY = -100;
+    let isHovering = false;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+    });
+
+    // Smooth ring follow
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Detect hoverable elements
+    document.addEventListener('mouseover', e => {
+      const el = e.target;
+      const hoverable = el.closest('a, button, [role="button"], input, select, textarea, label');
+      if (hoverable) {
+        ring.classList.add('hovering');
+        dot.style.transform = 'translate(-50%, -50%) scale(1.6)';
+      } else {
+        ring.classList.remove('hovering');
+        dot.style.transform = 'translate(-50%, -50%) scale(1)';
+      }
+    });
+
+    document.addEventListener('mouseleave', () => {
+      dot.style.opacity = '0'; ring.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+      dot.style.opacity = '1'; ring.style.opacity = '1';
+    });
+  </script>
+</body>
+</html>

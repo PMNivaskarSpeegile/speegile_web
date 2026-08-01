@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speegile Website — Technical Brief</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: #fff;
+      color: #1a1a2e;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 14mm 16mm;
+      background: #fff;
+      break-after: page;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Cover page ── */
+    .cover {
+      background: linear-gradient(145deg, #0B0F2A 0%, #1a2050 60%, #1A4FA0 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20mm 18mm;
+    }
+    .cover-tag {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #9B72E8; margin-bottom: 18px;
+    }
+    .cover h1 {
+      font-size: 42px; font-weight: 800; color: #fff; line-height: 1.15; margin-bottom: 16px;
+    }
+    .cover h1 span {
+      background: linear-gradient(135deg, #2D7DD2, #9B72E8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cover-sub {
+      font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.7; max-width: 400px; margin-bottom: 40px;
+    }
+    .cover-meta {
+      display: flex; gap: 40px; margin-top: 48px;
+    }
+    .cover-meta-item { }
+    .cover-meta-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+    .cover-meta-value { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; }
+
+    .cover-logo {
+      position: absolute; bottom: 18mm; right: 18mm;
+    }
+    .cover-logo img { height: 36px; object-fit: contain; }
+
+    .cover-orb1 {
+      position: absolute; top: -60px; right: -80px; width: 320px; height: 320px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(108,63,197,0.3) 0%, transparent 70%);
+    }
+    .cover-orb2 {
+      position: absolute; bottom: 40px; left: -60px; width: 250px; height: 250px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(45,125,210,0.25) 0%, transparent 70%);
+    }
+
+    /* ── Content pages ── */
+    .page-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 10px; border-bottom: 2px solid #f0f0f8; margin-bottom: 24px;
+    }
+    .page-header-title { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #9B72E8; }
+    .page-header-logo img { height: 24px; object-fit: contain; }
+
+    .section-heading {
+      font-size: 22px; font-weight: 800; color: #0B0F2A; margin-bottom: 6px;
+    }
+    .section-sub {
+      font-size: 13px; color: #888; margin-bottom: 22px; line-height: 1.6;
+    }
+
+    /* Cards grid */
+    .cards {
+      display: grid; gap: 14px;
+    }
+    .cards-2 { grid-template-columns: 1fr 1fr; }
+    .cards-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .card {
+      background: #F8F9FF; border-radius: 12px; padding: 18px;
+      border: 1px solid rgba(108,63,197,0.1);
+      break-inside: avoid;
+    }
+    .card-dark {
+      background: #0B0F2A; border: 1px solid rgba(155,114,232,0.2);
+    }
+    .card-accent {
+      background: linear-gradient(135deg, #1A4FA0, #6C3FC5);
+    }
+
+    .card-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: linear-gradient(135deg, #1A4FA0, #6C3FC5);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .card-icon svg { display: block; }
+
+    .card h3 { font-size: 14px; font-weight: 700; color: #0B0F2A; margin-bottom: 6px; }
+    .card-dark h3 { color: #fff; }
+    .card-accent h3 { color: #fff; }
+    .card p { font-size: 12px; color: #555; line-height: 1.65; }
+    .card-dark p { color: rgba(255,255,255,0.65); }
+    .card-accent p { color: rgba(255,255,255,0.85); }
+
+    .tag {
+      display: inline-block; font-size: 10px; font-weight: 600;
+      padding: 3px 8px; border-radius: 4px; margin-bottom: 8px;
+      background: rgba(108,63,197,0.1); color: #6C3FC5;
+    }
+    .tag-blue { background: rgba(26,79,160,0.1); color: #1A4FA0; }
+    .tag-orange { background: rgba(245,166,35,0.12); color: #d4890a; }
+    .tag-green { background: rgba(34,197,94,0.1); color: #16a34a; }
+
+    /* Tech list */
+    .tech-list { list-style: none; padding: 0; }
+    .tech-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid rgba(108,63,197,0.07);
+      font-size: 12px; color: #444; line-height: 1.6;
+    }
+    .tech-list li:last-child { border-bottom: none; }
+    .tech-list-dot {
+      width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0; margin-top: 1px;
+      background: linear-gradient(135deg, #1A4FA0, #6C3FC5);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tech-list-dot svg { display: block; }
+    .tech-name { font-weight: 700; color: #0B0F2A; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: #0B0F2A; color: #fff; font-weight: 600; padding: 10px 14px; text-align: left; font-size: 11px; letter-spacing: 0.04em; }
+    td { padding: 10px 14px; border-bottom: 1px solid #f0f0f8; color: #444; vertical-align: top; }
+    tr:nth-child(even) td { background: #F8F9FF; }
+
+    /* Page footer */
+    .page-footer {
+      position: absolute; bottom: 10mm; left: 16mm; right: 16mm;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 9px; color: #bbb;
+      border-top: 1px solid #f0f0f8; padding-top: 6px;
+    }
+
+    .divider { height: 3px; background: linear-gradient(90deg, #1A4FA0, #6C3FC5, #F5A623); border-radius: 2px; margin: 20px 0; }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #0B0F2A, #1a2050);
+      border-radius: 10px; padding: 16px 20px; margin-top: 16px;
+      border: 1px solid rgba(155,114,232,0.2);
+    }
+    .highlight-box p { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.7; font-style: italic; }
+    .highlight-box span { color: #9B72E8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PAGE 1: COVER -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="page cover">
+    <div class="cover-orb1"></div>
+    <div class="cover-orb2"></div>
+
+    <div class="cover-tag">Technical Brief · April 2026</div>
+    <h1>Speegile Website<br/><span>Technical Documentation</span></h1>
+    <p class="cover-sub">
+      A detailed overview of the technologies, architecture, and implementation techniques used to build the Speegile multi-page website.
+    </p>
+
+    <div class="divider" style="width:80px; margin: 0 0 32px 0;"></div>
+
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Project</div>
+        <div class="cover-meta-value">Speegile Web</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Pages</div>
+        <div class="cover-meta-value">6 Sections</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Architecture</div>
+        <div class="cover-meta-value">SPA (Hash Router)</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Rendering</div>
+        <div class="cover-meta-value">React 18 + Babel</div>
+      </div>
+    </div>
+
+    <div class="cover-logo">
+      <img src="assets/SpeegileLogo-clean.png" alt="Speegile" />
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PAGE 2: OVERVIEW + ARCHITECTURE -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <span class="page-header-title">Project Overview</span>
+      <div class="page-header-logo"><img src="assets/SpeegileLogo-clean.png" alt="Speegile" /></div>
+    </div>
+
+    <h2 class="section-heading">What Was Built</h2>
+    <p class="section-sub">A fully responsive, animated multi-page website for Speegile — delivered as a single HTML file with modular JSX component files.</p>
+
+    <div class="cards cards-2">
+      <div class="card">
+        <span class="tag">Structure</span>
+        <h3>6-Page Single Page App</h3>
+        <p>Home, Human Capital Solutions, Analytics Solutions, Why Speegile, About Us, and Contact — all within one HTML shell using hash-based routing (#/page-name) for instant navigation without page reloads.</p>
+      </div>
+      <div class="card">
+        <span class="tag tag-blue">Delivery Format</span>
+        <h3>Modular File Architecture</h3>
+        <p>The project is split across 9 files: one main index.html, two component files (Navbar, Footer), five page files, and one animation polyfill — each loaded as a Babel JSX script tag.</p>
+      </div>
+      <div class="card">
+        <span class="tag tag-orange">Responsiveness</span>
+        <h3>Mobile-First Design</h3>
+        <p>All layouts use CSS Grid and Flexbox with <code>minmax()</code> and <code>clamp()</code> for fluid typography and responsive columns. Navbar collapses to a hamburger drawer on screens under 900px.</p>
+      </div>
+      <div class="card">
+        <span class="tag tag-green">Performance</span>
+        <h3>Zero Build Step</h3>
+        <p>No Webpack, Vite, or bundler required. Babel Standalone transpiles JSX directly in the browser at runtime. Fonts are loaded via Google Fonts CDN with <code>font-display: swap</code>.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2 class="section-heading">Site Map</h2>
+    <p class="section-sub">Each route maps to a React component rendered inside a shared App shell.</p>
+
+    <table>
+      <thead>
+        <tr><th>Route (Hash)</th><th>Component</th><th>File</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>#/</td><td>HomePage</td><td>pages/Home.jsx</td><td>Hero, services overview, stats, CTA</td></tr>
+        <tr><td>#/human-capital</td><td>HumanCapitalPage</td><td>pages/HumanCapital.jsx</td><td>Recruitment & staffing services</td></tr>
+        <tr><td>#/analytics-solutions</td><td>AnalyticsPage</td><td>pages/AnalyticsSolutions.jsx</td><td>Analytics consulting & platform</td></tr>
+        <tr><td>#/why-speegile</td><td>WhySpeegile</td><td>pages/WhySpeegile.jsx</td><td>5 trust pillars with animated cards</td></tr>
+        <tr><td>#/about</td><td>AboutPage</td><td>pages/About.jsx</td><td>Founder profile, story, stats</td></tr>
+        <tr><td>#/contact</td><td>ContactPage</td><td>pages/Contact.jsx</td><td>Animated form with success state</td></tr>
+      </tbody>
+    </table>
+
+    <div class="page-footer">
+      <span>Speegile Website — Technical Brief</span>
+      <span>Page 2</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PAGE 3: TECH STACK -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <span class="page-header-title">Technology Stack</span>
+      <div class="page-header-logo"><img src="assets/SpeegileLogo-clean.png" alt="Speegile" /></div>
+    </div>
+
+    <h2 class="section-heading">Core Technologies Used</h2>
+    <p class="section-sub">Every library was chosen for zero-build compatibility — all loaded via CDN script tags.</p>
+
+    <ul class="tech-list">
+      <li>
+        <div class="tech-list-dot"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="tech-name">React 18.3.1</div>Declarative UI library used to build all components. Loaded via unpkg CDN with integrity hashes. Every page and shared component (Navbar, Footer, FadeUp, GradBtn, CountUp) is a React function component using hooks like <code>useState</code>, <code>useEffect</code>, and <code>useRef</code>.</div>
+      </li>
+      <li>
+        <div class="tech-list-dot"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="tech-name">ReactDOM 18.3.1</div>Used to mount the root App component into the DOM via <code>ReactDOM.createRoot()</code>. This is the modern React 18 API that enables concurrent features and deferred rendering.</div>
+      </li>
+      <li>
+        <div class="tech-list-dot"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="tech-name">Babel Standalone 7.29.0</div>Transpiles JSX syntax into plain JavaScript directly in the browser. All component files use <code>type="text/babel"</code> script tags. This eliminates any build tooling requirement while allowing modern JSX syntax throughout the project.</div>
+      </li>
+      <li>
+        <div class="tech-list-dot"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="tech-name">Custom Framer Motion Polyfill (framer-compat.js)</div>A hand-written animation compatibility layer that mirrors the Framer Motion API — <code>motion.div</code>, <code>motion.a</code>, <code>AnimatePresence</code>, <code>useInView</code>, <code>whileHover</code>, <code>whileTap</code>, <code>initial/animate</code> props — using CSS transitions and IntersectionObserver. Written because the Framer Motion CDN was unavailable in the sandbox environment.</div>
+      </li>
+      <li>
+        <div class="tech-list-dot"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="tech-name">Inter (Google Fonts)</div>Primary typeface loaded via Google Fonts. Weights 400, 500, 600, 700, and 800 are imported. Used for all body text, headings, labels, and UI elements across the entire site.</div>
+      </li>
+      <li>
+        <div class="tech-list-dot"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="tech-name">Vanilla JavaScript (ES2020)</div>Used for all non-React interactivity: scroll progress bar updates, scroll-to-top button visibility, custom animated cursor tracking, IntersectionObserver-based section reveal animations, and hash-based routing via <code>window.addEventListener('hashchange')</code>.</div>
+      </li>
+      <li>
+        <div class="tech-list-dot"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="tech-name">CSS3 (Inline + Global Stylesheet)</div>All component-level styles are written as React inline style objects. Global styles (scrollbar, nav breakpoints, card mobile rules, reveal animations) are in a <code>&lt;style&gt;</code> block in index.html. CSS features used: Grid, Flexbox, clamp(), custom properties, @keyframes, @media queries, CSS gradients, backdrop-filter, and text-wrap: pretty.</div>
+      </li>
+    </ul>
+
+    <div class="page-footer">
+      <span>Speegile Website — Technical Brief</span>
+      <span>Page 3</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PAGE 4: FEATURES + PATTERNS -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <span class="page-header-title">Features &amp; Implementation Patterns</span>
+      <div class="page-header-logo"><img src="assets/SpeegileLogo-clean.png" alt="Speegile" /></div>
+    </div>
+
+    <h2 class="section-heading">Key Features Implemented</h2>
+    <p class="section-sub">Each feature uses a specific browser API or React pattern explained below.</p>
+
+    <div class="cards cards-2" style="margin-bottom:16px;">
+      <div class="card card-dark">
+        <span class="tag" style="background:rgba(155,114,232,0.2); color:#9B72E8;">Routing</span>
+        <h3>Hash-Based SPA Router</h3>
+        <p>A custom <code>useHash()</code> hook listens to <code>window.hashchange</code> events and returns the current hash. The App component switches between page components based on the hash value, calling <code>window.scrollTo(0,0)</code> on every route change.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Animation</span>
+        <h3>Scroll-Triggered Reveals</h3>
+        <p>The <code>FadeUp</code> React component uses a custom <code>useInView</code> hook backed by <code>IntersectionObserver</code>. When the element enters the viewport, it transitions from <code>opacity:0, translateY(40px)</code> to fully visible — with configurable delay for staggered effects.</p>
+      </div>
+      <div class="card">
+        <span class="tag tag-orange">UX</span>
+        <h3>Animated Custom Cursor</h3>
+        <p>Two DOM elements (dot + ring) are positioned with <code>position:fixed</code>. The dot follows mouse coordinates instantly via <code>mousemove</code>. The ring uses a <code>requestAnimationFrame</code> loop with lerp (linear interpolation at 18% per frame) for a smooth trailing effect.</p>
+      </div>
+      <div class="card card-dark">
+        <span class="tag" style="background:rgba(155,114,232,0.2); color:#9B72E8;">UX</span>
+        <h3>Scroll Progress Bar</h3>
+        <p>A fixed-position <code>&lt;div&gt;</code> at the top of the screen. Its width is updated on every <code>scroll</code> event using <code>window.scrollY / (scrollHeight - innerHeight) × 100%</code> — styled with a blue→purple→orange gradient and glow shadow.</p>
+      </div>
+      <div class="card">
+        <span class="tag tag-green">UX</span>
+        <h3>Scroll-to-Top Button</h3>
+        <p>Appears after scrolling 320px using CSS class toggling (<code>.visible</code>). On click, calls <code>window.scrollTo({ top: 0, behavior: 'smooth' })</code>. Uses CSS transitions for the appear/disappear animation — no JS animation library needed.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Animation</span>
+        <h3>CountUp Stat Animation</h3>
+        <p>The <code>CountUp</code> component uses <code>useInView</code> to trigger a <code>requestAnimationFrame</code> loop when the stat enters the viewport. An ease-out cubic function (<code>1 - (1-t)³</code>) makes the number accelerate then slow to its final value.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <p><span>Design system:</span> Navy <code>#0B0F2A</code> · Brand Blue <code>#1A4FA0</code> · Purple Accent <code>#6C3FC5</code> · Soft Purple <code>#9B72E8</code> · Orange <code>#F5A623</code> — all used consistently across gradients, buttons, borders, and text highlights to create a cohesive visual language.</p>
+    </div>
+
+    <div class="page-footer">
+      <span>Speegile Website — Technical Brief</span>
+      <span>Page 4</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PAGE 5: FILE STRUCTURE + CLOSING -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <span class="page-header-title">File Structure &amp; Summary</span>
+      <div class="page-header-logo"><img src="assets/SpeegileLogo-clean.png" alt="Speegile" /></div>
+    </div>
+
+    <h2 class="section-heading">Project File Structure</h2>
+    <p class="section-sub">All files live in the project root. No build output folders or node_modules required.</p>
+
+    <table style="margin-bottom:20px;">
+      <thead>
+        <tr><th>File</th><th>Type</th><th>Role</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>index.html</td><td>HTML + CSS + JS</td><td>Entry point — loads all scripts, defines global styles, mounts React root, runs cursor/scroll JS</td></tr>
+        <tr><td>framer-compat.js</td><td>Vanilla JS</td><td>Custom animation polyfill — implements motion.*, AnimatePresence, useInView using CSS transitions + IntersectionObserver</td></tr>
+        <tr><td>components/Navbar.jsx</td><td>React JSX</td><td>Fixed top navigation with logo, links, hamburger drawer, transparent-to-dark scroll transition</td></tr>
+        <tr><td>components/Footer.jsx</td><td>React JSX</td><td>Dark footer with Quick Links, Services, and Contact columns</td></tr>
+        <tr><td>pages/Home.jsx</td><td>React JSX</td><td>Hero, FadeUp, GradBtn, CountUp, WHY_ITEMS — shared utilities exported to window for use across pages</td></tr>
+        <tr><td>pages/HumanCapital.jsx</td><td>React JSX</td><td>PageHero, ServiceCard, WhyList, CtaBanner — shared page utilities also exported to window</td></tr>
+        <tr><td>pages/AnalyticsSolutions.jsx</td><td>React JSX</td><td>Two-column service cards with consulting and platform offerings</td></tr>
+        <tr><td>pages/WhySpeegile.jsx</td><td>React JSX</td><td>5 animated trust pillar cards with numbered headings and floating icons</td></tr>
+        <tr><td>pages/About.jsx</td><td>React JSX</td><td>Founder profile card, stat callouts, 6-tile capability grid</td></tr>
+        <tr><td>pages/Contact.jsx</td><td>React JSX</td><td>Animated form with loading spinner and success checkmark state</td></tr>
+        <tr><td>assets/SpeegileLogo-clean.png</td><td>Image (PNG)</td><td>Transparent-background logo used in Navbar and Footer</td></tr>
+      </tbody>
+    </table>
+
+    <div class="divider"></div>
+
+    <h2 class="section-heading" style="margin-bottom:10px;">Summary</h2>
+    <div class="cards cards-3">
+      <div class="card card-accent">
+        <h3>No Build Tools</h3>
+        <p>Pure HTML + CDN-loaded React + Babel. Open index.html in any browser to run.</p>
+      </div>
+      <div class="card card-dark">
+        <h3>Modular JSX</h3>
+        <p>9 files, each with a clear single responsibility. Components shared via window globals.</p>
+      </div>
+      <div class="card">
+        <span class="tag tag-green">Ready</span>
+        <h3>Production Ready</h3>
+        <p>Fully responsive, mobile-friendly, accessible — deployable to any static hosting service.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:16px;">
+      <p>To deploy: upload all files to any static host (Netlify, Vercel, GitHub Pages, AWS S3). No server-side logic required — the entire site runs client-side in the browser.</p>
+    </div>
+
+    <div class="page-footer">
+      <span>Speegile Website — Technical Brief · April 2026</span>
+      <span>Page 5 of 5</span>
+    </div>
+  </div>
+
+  <script>
+    document.fonts.ready.then(() => {
+      setTimeout(() => window.print(), 600);
+    });
+  </script>
+</body>
+</html>
