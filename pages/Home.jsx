@@ -110,7 +110,7 @@ function HomePage() {
             {[
               { val: '2018', suffix: '', label: 'Year Founded' },
               { val: '25', suffix: '+', label: 'Years Leadership Experience' },
-              { val: '25', suffix: '+', label: 'Customers Served' },
+              // { val: '25', suffix: '+', label: 'Customers Served' },
             ].map((s, i) => (
               <div key={s.label} style={{
                 textAlign: 'center', padding: '20px 40px',
